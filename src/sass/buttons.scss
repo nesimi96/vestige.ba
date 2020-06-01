@@ -1,0 +1,41 @@
+.SecondaryButton {
+    @include max-width-height;
+    @include flex-center;
+    background-color: #806c53;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    transition: all .25s ease-in-out;
+
+    &:hover {
+        background-color: #9c8569;
+    }
+}
+
+.ThirdButton {
+    @include max-width-height;
+    @include flex-center;
+    border: .5px solid rgb(187, 186, 186);
+    box-shadow: 0 1px 6px 0 rgba(216, 214, 214, 0.25);
+    border-radius: 2.5px;
+    cursor: pointer;
+    transition: all .25s ease-in-out;
+     
+    &:hover {
+        background-color: #eee;
+    }
+}
+
+.PaginationButton {
+    border: .5px solid rgb(209, 207, 207);
+    background-color: #fff;
+    box-shadow: 0 1px 6px 0 rgba(216, 214, 214, 0.2);
+    border-radius: 2.5px;
+    padding: 15px;
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #eee;
+    }
+
+}
