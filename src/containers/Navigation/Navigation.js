@@ -9,8 +9,8 @@ const Navigation = (props) => {
     const route = props.route;
 
     const navItemData = [
-        {text: 'Muški testeri', route: '/muški-testeri/page=1', animeTime: '.5s'},
-        {text: 'Ženski testeri', route: '/ženski-testeri/page=2', animeTime: '.7s'},
+        {text: 'Muški testeri', route: '/muški-testeri-55/page=1', animeTime: '.5s'},
+        {text: 'Ženski testeri', route: '/ženski-testeri-55/page=2', animeTime: '.7s'},
         {text: 'O nama', route: '/about', animeTime: '.9s'},
         {text: 'Kontakt', route: 'contact', animeTime: '1.1s'},
         {text: 'Pitanja (faq)', route: '/faq', animeTime: '1.1s'},

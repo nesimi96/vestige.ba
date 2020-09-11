@@ -23,9 +23,9 @@ const Pagination = (props) => {
                                       [page, page + 1, page + 2]; 
 
     const buttonsData = [
-        {text: 1, diff: lastPageDiff < 3 ? null : true},
-        {text: '...', diff: lastPageDiff < 3 ? null: true, dots: true},
-        {text: pageButtons[0]},
+        {text: 1, diff: lastPageDiff < 3 && props.numOfPages > 3 ? null : true},
+        {text: '...', diff: lastPageDiff < 3 && props.numOfPages > 3 ? null: true, dots: true},
+        {text: props.numOfPages > 2 ? pageButtons[0] : null},
         {text: pageButtons[1]},
         {text: pageButtons[2]},
         {text: '...', diff: lastPageDiff < 3 ? true : null, dots: true},

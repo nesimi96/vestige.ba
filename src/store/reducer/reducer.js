@@ -7,6 +7,8 @@ const initialState = {
     cartOpen: null,
     cartUpdated: null,
     navOpen: null,
+    countryAlert: true,
+    country: 'BA'
 }
 
 const reducer = (state = initialState, action) => {
@@ -20,6 +22,10 @@ const reducer = (state = initialState, action) => {
             return utilityFunc(state, state.cartOpen = action.purpose)
         case actionTypes.CART_CLOSE :
             return utilityFunc(state, state.cartOpen = action.purpose)
+        case actionTypes.SET_COUNTRY :
+            return utilityFunc(state, state.country = action.purpose)
+        case actionTypes.SET_COUNTRY :
+            return utilityFunc(state, state.countryAlert = false)
         case actionTypes.ADD_TO_CART :
             return utilityFunc(state, state.cartList = action.cartList)
         case actionTypes.NAV_OPEN :

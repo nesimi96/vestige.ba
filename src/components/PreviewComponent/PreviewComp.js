@@ -2,12 +2,15 @@ import React from 'react';
 import '../../sass/main.scss';
 
 const PreviewComp = (props) => {
-    
+
+    let country = props.country;    
+    country = 'BA'
+
     let redirect = null;
     if(props.text === 'MUŠKI PARFEMI'){
-        redirect = '/muški-testeri/page=1'
+        redirect = `/muški-testeri-55ml/page=1`
     }else if(props.text === 'ŽENSKI PARFEMI') {
-        redirect = '/ženski-testeri/page=1'
+        redirect = `/ženski-testeri-55ml/page=1`
     }
 
     return <div onClick={() => props.router.history.push(redirect) } className="Preview-Comp">

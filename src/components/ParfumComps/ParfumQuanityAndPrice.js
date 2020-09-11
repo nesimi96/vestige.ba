@@ -7,6 +7,9 @@ import ParfumRating from './ParfumRating';
 const ParfumQuanityAndPrice = (props) => {
 
     const price = props.price;
+    const country = props.country;
+
+    let currency = country !== "BA" ? '€' : 'KM';
     
     let activePrice = null;
     if(props.activePrice){
@@ -22,11 +25,13 @@ const ParfumQuanityAndPrice = (props) => {
     let discount = null;
     if(props.activeDiscount && props.activeDiscount !== '0') {
         discount = PriceForUI(props.activeDiscount);
-        discountBox = <span style={ discountStyle } > {activePrice} KM </span>
+        discountBox = <span style={ discountStyle } > {activePrice} {currency} </span>
     }
  
     let parfumQuanity = null;
     if(price){
+
+        console.log(price)
 
         parfumQuanity = <div className="ParfumQuanity">
                                 <div className="ParfumQuanity-quanity">
@@ -44,7 +49,7 @@ const ParfumQuanityAndPrice = (props) => {
 
                                 </div>
                                 <div className="ParfumQuanity-price">
-                                    <span> {discount ? discount : activePrice } </span> KM
+                                    <span> {discount ? discount : activePrice } </span> {currency}
                                     { discountBox }
                                 </div>
                         </div>

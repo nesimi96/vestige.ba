@@ -4,13 +4,12 @@ import ParfumPreviw from '../../components/CatalogueComponents/ParfumPreview';
 import Loader from '../../components/Loader/Loader';
 
 const CataloguePreview  = (props) => {
-    
-    
+  
    if(props.parfumData){
   
      let renderParfums = null;
      renderParfums = props.parfumData.map((parfum, index) => {
-       return <ParfumPreviw parfum={parfum} addToLocalStorage={props.addToLocalStorage} updateCart={props.updateCart}
+       return <ParfumPreviw country={props.country} parfum={parfum} addToLocalStorage={props.addToLocalStorage} updateCart={props.updateCart}
         router={props.route} price={parfum.categoryPrice} route={parfum.names.route}
        brand={parfum.brand} img={parfum.names.img} nameUI={parfum.names.UI} parfCategory={props.parfCategory} key={index} />
      }) 

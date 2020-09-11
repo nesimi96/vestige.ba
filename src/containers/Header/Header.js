@@ -7,6 +7,8 @@ const Header = (props) => {
 
     const router = props.route;
 
+    let link ='/originalni-testeri-55ml/page=1';
+    
 
     let backgroundImg = <HeaderBackgroundImg />
     if(window.innerWidth >= 900) {
@@ -16,7 +18,7 @@ const Header = (props) => {
     return <header className="Header">
                <div className="Header-content">
                    <h1>ORIGINALNI TESTERI</h1>
-                   <PrimaryButton text="POGLEDAJ PONUDU" click={() => router.history.push('/originalni-testeri/page=1')} style={PrimaryButtonStyle}/>
+                   <PrimaryButton text="POGLEDAJ PONUDU" click={() => router.history.push(link)} style={PrimaryButtonStyle}/>
                </div>
                { backgroundImg } 
           </header>

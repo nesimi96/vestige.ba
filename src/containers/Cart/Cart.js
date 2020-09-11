@@ -13,6 +13,8 @@ const Cart = (props) => {
      
      const [cartList, setCartList] = useState(null);
 
+     let country = localStorage.getItem('country')
+
       useEffect(() => {
           setCartList(props.cartList);
       }, [props.cartList])
@@ -23,7 +25,7 @@ const Cart = (props) => {
               return sum = cartList.reduce((ACC, CUR) => { return +ACC + +CUR.price.price }, 0);
           }
      }
-
+     
      const deleteItemFromCart = (index) => {
 
        // delete from localStorage
@@ -53,8 +55,8 @@ const Cart = (props) => {
                          state === 'exiting' || state === 'exited' ? 'wrapperClosing .15s linear' : ''
                     }} className="Cart-Wrapper">
                          <CartHeader cartClose={() => props.closeCart(actionTypes.CART_CLOSE, null)} />
-                         <CartSummary deleteItem={deleteItemFromCart} cartList={cartList} />
-                         <CartTotal calculateSummary={calculateSummary()} />
+                         <CartSummary country={country} deleteItem={deleteItemFromCart} cartList={cartList} />
+                         <CartTotal country={country} calculateSummary={calculateSummary()} />
                     </div>
                </div>
           )}

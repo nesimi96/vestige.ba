@@ -5,8 +5,8 @@ import Filter from '../components/CatalogueComponents/Filter/Filter';
 import FilterPath from '../components/CatalogueComponents/Filter/FilterPath';
 import CataloguePreview from '../containers/CataloguePreview/CataloguePreview';
 import Pagination from '../components/Pagination/Pagination';
-import Connect from '../components/Connect/Connect';
 import Brands from '../components/Brands/Brands';
+import { srbParfumData } from '../data/srbParfumData';
 import { connect } from 'react-redux';
 import * as action from '../store/actions/actions';
 
@@ -16,22 +16,42 @@ const Catalogue = (props) => {
     const [category, setCategory] = useState();
     const [filterData, setFilterData] = useState([]);
     const [sort, setSort] = useState('Najpopularniji');
-    const [parfCategory, setParfCategory] = useState('55ml')
+    const [parfCategory, setParfCategory] = useState('100ml')
     const [page, setPage] = useState(1);
-  
+    const [country, setCountry] = useState(null);
+
+    const cntry = localStorage.getItem('country');
+
     // 1
     useEffect(() => {
        window.scrollTo(0, 0);
-       axios.get('https://vestige-2172c.firebaseio.com/perfums.json')
+
+       setCountry(cntry)
+
+       console.log(cntry)
+       const countryData = cntry !== 'BA' ? 'serbiaPerfums' : 'perfums'
+
+       console.log(countryData)
+
+       axios.get(`https://vestige-2172c.firebaseio.com/${countryData}.json`)
        .then(res => {
            const extractData = Object.values(res.data);
-           let data = sortingArraysByPathname(extractData);
-           setParfumData(data);
+           console.log(extractData)
+           checkCountry(extractData)
        })
        .catch(error => console.log(error))
     }, [props.route.location.pathname])
 
+    const pathName = props.route.location.pathname
 
+
+    useMemo(() => {
+
+        if(pathName.includes('55ml')) setParfCategory('55ml')
+        else if(pathName.includes('100ml')) setParfCategory('100ml')
+        
+    }, [props.route.match.path])
+    
     // Catch when route is changed
     const routeID = +props.route.match.params.id
     useEffect(() => {
@@ -56,6 +76,12 @@ const Catalogue = (props) => {
         return joinedUrl
     }
 
+    // Check user's country
+    const checkCountry = (extractData) => {
+         let finalData = extractData;
+         let data = sortingArraysByPathname(finalData);
+         setParfumData(data);
+    }
 
     let pathname = props.route.location.pathname;
     
@@ -91,8 +117,8 @@ const Catalogue = (props) => {
     // 2 Filtering data
     const setFiltering = (category, option) => {
         let copied = [...filterData]
-        if(option === 'muški'){ window.location.href = '/muški-testeri/page=1'; }
-        else if(option === 'ženski') { window.location.href = '/ženski-testeri/page=1' ; }
+        if(option === 'muški'){ window.location.href = '/muški-testeri-55ml/page=1'; }
+        else if(option === 'ženski') { window.location.href = '/ženski-testeri-55ml/page=1' ; }
 
         if(category === 'sort'){ setSort(option) }
         if(category === 'category') { setParfCategory(option) }
@@ -158,8 +184,8 @@ const Catalogue = (props) => {
                 ml.push(curParf)
             }
         })
-
-        return ml;
+        
+         return ml
     }
 
     let matrix = [];
@@ -176,8 +202,9 @@ const Catalogue = (props) => {
     
     let paginationTop = null;
     let mainPagination = null;
+
     if(sorted){
-        sorted = categorySort(sorted)   
+        sorted = categorySort(sorted) 
         sorted = matrixForPagionation([...sorted]);
         sorted = sorted[page - 1]
     
@@ -194,11 +221,11 @@ return <div className="Catalogue">
               <Filter setFiltering={setFiltering} filterData={filterData} sorts={sort} 
               removeFilter={removeFilter} parfumData={parfumData ? parfumData : null} parfCategory={parfCategory} />
               { paginationTop }
-              <CataloguePreview page={page} addToLocalStorage={props.addToLocalStorage} route={props.route}
+              <CataloguePreview country={country} page={page} addToLocalStorage={props.addToLocalStorage} route={props.route}
                parfumData={ sorted } parfCategory={parfCategory} updateCart={props.updateCart} />
               { mainPagination }
               <div className="Catalogue-connect">
-                   <Connect buttonStyle={() => buttonStyle() } />
+                  
                    <Brands />
               </div>
            </div>
@@ -212,40 +239,3 @@ const mapDispatchToProps = dispatch => ({
 export default connect(null, mapDispatchToProps)(Catalogue)
 
 
-// 1 - We first recieve data from data base, and sort them by route pathname
-// 2 - Filter data with some parameters. If parameters are 'men' or 'women', then redirect. In other case,
-
-const buttonStyle = () => {
-  
-    return `
-  
-        // changed
-        align-self: center;
-        padding: 12px 40px;
-        font-size: 16px;
-        margin-bottom: 45px;
-  
-        position: relative;
-        background-color: transparent;
-        margin-top: 7%;
-        color: #9c8265;
-        font-family: 'Neutra';
-        border: 1px solid #9c8265;
-        transition: all .15s ease-in;
-  
-        &::before {
-            position: absolute;
-            top: -9%;
-            left: 1%;
-            display: block;
-            content: "";
-            border: 1px solid #9c8265;
-            height: 114%;
-            width: 97%;
-        }
-  
-        &:hover {
-            background-color: #e4c7a533;
-        }
-    `
-      }

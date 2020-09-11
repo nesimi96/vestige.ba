@@ -13,6 +13,6 @@ export const calcTotal = (justArticles, shipping, promo) => {
     return total
 }
 
-const percentage = (percent, total) => {
+export const percentage = (percent, total) => {
     return Math.round(((percent/ 100) * total))
 }

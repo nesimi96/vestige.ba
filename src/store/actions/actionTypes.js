@@ -6,3 +6,4 @@ export const CART_CLOSE = 'CART_CLOSE';
 export const CART_UPDATED = 'CART_UPDATED';
 export const NAV_OPEN = 'NAV_OPEN';
 export const NAV_CLOSED = 'NAV_CLOSED';
+export const SET_COUNTRY = 'SET_COUNTRY';

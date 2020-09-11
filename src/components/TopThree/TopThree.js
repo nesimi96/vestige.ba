@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import '../../sass/main.scss';
 import TopThreeComponent from './TopThreeComponent/TopThreeComponent';
+import { srbParfumData } from '../../data/srbParfumData';
 import axios from 'axios';
 import ReactSwipe from 'react-swipe';
 
@@ -8,17 +9,38 @@ const TopThree = (props) => {
 
     const [parfumData, setParfumData] = useState(null);
     const [elementPosition, setElementPostion] = useState(0);
+    const [country, setCountry] = useState(null)
+
+    const cntry = localStorage.getItem('country')
 
     useEffect(() => {
-        axios.get('https://vestige-2172c.firebaseio.com/perfums.json')
+
+        setCountry(cntry)
+        const countryData = country !== "BA" ? 'perfums' : 'serbiaPerfums';
+        
+        axios.get(`https://vestige-2172c.firebaseio.com/${countryData}.json`)
         .then(res => {
             const extractedData = Object.values(res.data);
             const sortedByBought = extractedData.sort((a, b) => a.bought - b.bought).reverse();
-            const onlyThree = sortedByBought.slice(0, 3);
+            const onlyThree = onlyParfumsAreThere(sortedByBought);
             setParfumData(onlyThree);
         })
         .catch(error => console.log(error))
-    }, [])
+      
+      }, [cntry])
+    
+      
+    const onlyParfumsAreThere = (data) => {
+        
+        const threeParfums = [];
+        data.forEach((cur, ind) => {
+            if(cur.price.medium.price != '0') {
+                threeParfums.push(cur);
+            }
+        })
+
+        return threeParfums.slice(0, 3)
+    }
 
     let componentRoute = null;
 
@@ -28,9 +50,9 @@ const TopThree = (props) => {
             return <div key={ind} style={{
                 marginTop: props.notTopThree ? 20 : null
             }} className="TopThree-Slider">
-                        <TopThreeComponent key={ind} router={props.route}
+                        <TopThreeComponent country={country} key={ind} router={props.route}
                         brand={cur.brand} img={cur.names.img} route={cur.names.route}
-                        UIname={cur.names.UI} price={cur.price.big.price}/>
+                        UIname={cur.names.UI} price={cur.price.medium.discount}/>
                     </div>
          })
     }
@@ -54,9 +76,9 @@ const TopThree = (props) => {
     let notScrollable
     if(window.innerWidth > 650 && parfumData){
         notScrollable = parfumData.map((cur, ind) => {
-           return <TopThreeComponent key={ind} router={props.route}
+           return <TopThreeComponent country={country} key={ind} router={props.route}
            brand={cur.brand} img={cur.names.img} route={cur.names.route}
-           UIname={cur.names.UI} price={cur.price.big.price}/>
+           UIname={cur.names.UI} price={cur.price.medium.discount}/>
        })
     }
 

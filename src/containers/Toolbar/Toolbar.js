@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import '../../sass/main.scss';
 import Hamburger from '../../components/Hamburger/Hamburger';
 import Logo from '../../components/Images/Logo';
@@ -9,8 +9,10 @@ import Cart from '../Cart/Cart';
 import Navigation from '../../containers/Navigation/Navigation';
 import DesktopNav from '../../components/NavigationComponents/DesktopNav/DesktopNav';
 import Backdrop from '../../components/Backdrop/Backdrop';
+import Alert from '../../components/Backdrop/Alert/Alert';
 import { Transition } from 'react-transition-group';
 import { connect } from 'react-redux';
+import axios from 'axios';
 import * as action from '../../store/actions/actions';
 import * as actionTypes from '../../store/actions/actionTypes';
 
@@ -18,8 +20,10 @@ const Toolbar = (props) => {
 
     const [toolbarBckr, setToolbarBckr] = useState(null)
     
+    const pathName = props.route.location.pathname
+
     let homepage = null;
-        if(props.route.location.pathname === '/'){
+        if(pathName === '/'){
            homepage = true
         }
 
@@ -47,6 +51,9 @@ const Toolbar = (props) => {
 
       </Transition>
     : null : null;
+
+    let discountAlert = null;
+    if(pathName === '/') discountAlert = <Alert />
 
 
     return <div className="Toolbar" style={{backgroundColor:
@@ -76,6 +83,7 @@ const Toolbar = (props) => {
                { window.innerWidth > 650 ? <DesktopNav route={props.route}/> : null}
                { search }
                <Backdrop openCart={() => props.openCart(actionTypes.CART_CLOSE, null)} cartOpen={props.cartOpen} />
+               { discountAlert }
            </div>
 }
 

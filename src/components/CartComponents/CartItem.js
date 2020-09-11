@@ -5,10 +5,13 @@ import '../../sass/main.scss';
 const CartItem = (props) => {
      
     const cartList = props.cartList;
+    const country = props.country;
 
     const nameUI = cartList.parfumData.parfumData.names.UI;
-    const { price, ml } = cartList.price;
+    let { price, ml } = cartList.price;
+
     let convertedPrice = PriceForUI(price);
+
     const imgUrl = cartList.parfumData.parfumData.names.img;
     
     return <div className="CartItem">
@@ -21,7 +24,7 @@ const CartItem = (props) => {
                     <div onClick={() => props.deleteItem(props.index)} > &#10005; Ukloni </div> }
                </div>
                <div className="CartItem-price">
-                    { convertedPrice } KM
+                    { convertedPrice } {country !== "BA" ? '€' : 'KM'}
                </div>
             </div>
 }

@@ -11,9 +11,13 @@ const CheckoutSummary = (props) => {
 
     const [summary, setSummary] = useState(null);
 
+    let width = window.innerWidth;
     useEffect(() => {
-        if(window.innerWidth > 900) setSummary(true)
+        if(width > 900) setSummary(true)
     }, [])
+
+    const country = props.country;
+
  
     let cartList = null;
     cartList = props.cartList ? props.cartList : null;
@@ -24,15 +28,18 @@ const CheckoutSummary = (props) => {
      let cartItems = null;
      if(cartList){
          cartItems = cartList.map((cur, ind) => {
-             return <CartItem from="CheckoutSummary" cartList={cur} key={ind} />
+             return <CartItem country={country} from="CheckoutSummary" cartList={cur} key={ind} />
          }) 
      }
 
+     let closeOrderSummary = null;
+     if(width < 900) closeOrderSummary = () => setSummary(!summary)
+
 
     return <div className="CheckoutSummary">
-                <div onClick={() => setSummary(!summary)} className="CheckoutSummary-header">
+                <div onClick={closeOrderSummary} className="CheckoutSummary-header">
                      <h3> Narudžba </h3>
-                    <Arrow click={() => setSummary(!summary)} style={svgArrowStyle} />
+                    <Arrow click={closeOrderSummary} style={svgArrowStyle} />
                 </div>
                 <Transition in={summary} timeout={0} mountOnEnter unmountOnExit>
                 {state => (
@@ -45,7 +52,7 @@ const CheckoutSummary = (props) => {
                          typePromoCode={props.typePromoCode} />
                     </div>
                     <div className="CheckoutSummary-total"> 
-                         <CartTotal promoDiscount={props.promoDiscount} totalWithPromo={props.totalWithPromo} promo={props.promoDiscount} 
+                         <CartTotal country={country} promoDiscount={props.promoDiscount} totalWithPromo={props.totalWithPromo} promo={props.promoDiscount} 
                          from="CheckoutSummary" calculateSummary={props.calculateSummary()} />
                     </div>
                     </>

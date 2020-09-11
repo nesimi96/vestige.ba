@@ -4,13 +4,13 @@ import BrandsPhotos from '../Images/BrandsPhotos';
 
 const Brands = (props) => {
 
-   /* return <div className="Brands">
+    return <div className="Brands">
                <div className="Brands-golden-line"></div>
                <h3>brendovi</h3>
                <div className="Brands-wrapper">
                     <BrandsPhotos />
                </div>
-           </div>*/
+           </div>
            return null
 }
 

@@ -16,9 +16,8 @@ const Footer = (props) => {
  
     const contactData = [
         {text: '+387 61 990 129', svg: <Phone style={iconStyle}/>, },
-        {text: 'INSTAGRAM/PARFEMI.VESTIGE', svg: <Instagram style={iconStyle}/> , 
-    link: "https://www.instagram.com/parfemi.vestige/"},
-        {text: 'FACEBOOK/PARFEMI.VESTIGE', svg: <Facebook style={iconStyle}/>},
+        {text: 'INSTAGRAM/VESTIGE.BA', svg: <Instagram style={iconStyle}/> , 
+    link: "https://www.instagram.com/vestige.ba/"},
         {text: 'INFO@VESTIGE.BA', svg: <Mail style={iconStyle}/>},
         {text: '71000 SARAJEVO', svg: <Location style={iconStyle}/>},
     ]
@@ -28,9 +27,9 @@ const Footer = (props) => {
     })
 
     const pagesData = [
-        {text: 'originani testeri', route: '/originalni-testeri/page=1'},
-        {text: 'muški testeri', route: '/muški-testeri/page=1'},
-        {text: 'ženski testeri', route: '/ženski-testeri/page=1'},
+        {text: 'originalni testeri', route: '/originalni-testeri-55ml/page=1'},
+        {text: 'muški testeri', route: '/muški-testeri-55ml/page=1'},
+        {text: 'ženski testeri', route: '/ženski-testeri-55ml/page=1'},
         {text: 'o nama', route: '/about'},
     ]
 

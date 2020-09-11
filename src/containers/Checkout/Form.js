@@ -94,9 +94,6 @@ const Form = (props) => {
                     <div className="Form-inputs">
                         <p> {emailData.label} </p>
                         <Input inputVal={(e) => emailVal(e)} style={inputStyle} type={emailData.type} />
-                        <h6 className="Form-inputs-para"> 
-                           Ukoliko prilikom vaših kupovina unosite e-mail adresu i sa njom premašite cifru od <b>100.00 KM</b> dobijate VESTIGE GOLD vaučer kojeg možete iskoristiti i dobiti popust od 20% na vašu sljedeću kupovinu.
-                        </h6>
                     </div>
                     <div className="Form-button"> 
                     <SubmitButton click={() => checkInputsValidation()}

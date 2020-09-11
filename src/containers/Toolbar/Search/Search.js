@@ -19,13 +19,24 @@ const Search = (props) => {
         axios.get('https://vestige-2172c.firebaseio.com/perfums.json')
         .then(res => {
             const extractData = Object.values(res.data);
-            setData(extractData)
+            const parfumData = parfumsAreThere(extractData)
+            setData(parfumData)
         })
         .catch(error => console.log(error))
     }, [])
 
+    // we check for items only if there are on the page
+    const parfumsAreThere = (extractData) => {
+          const parfumsThere = [];
+          extractData.forEach((cur, ind) => {
+              if(cur.price.big.price != 0 || cur.price.medium.price != 0) parfumsThere.push(cur)
+          })
+          
+          return parfumsThere;
+    }
+
     let parfumList = null;
-    // Alghorith were we search for perfum from user input...
+    // Alghorithm were we search for perfum from user input...
     const searchParfums = useCallback(() => {
        parfumList = findParfum(inputValue, data);
     }, [inputValue])

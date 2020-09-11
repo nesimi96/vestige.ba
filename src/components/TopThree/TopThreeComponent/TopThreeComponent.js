@@ -13,6 +13,8 @@ const TopThreeComponent = (props) => {
 
     let price = PriceForUI(props.price);
 
+    let currency = props.country !== "BA" ? '€' : 'KM'
+
     return <div className="TopThreeComponent">
                <div className="TopThreeComponent-image" onClick={() => props.router.history.push(props.route) }>
                      <img  src={require(`../../../assets/images/perfums/${props.img}.png`)}/>
@@ -20,7 +22,7 @@ const TopThreeComponent = (props) => {
                <p className="TopThreeComponent-brand"> {props.brand} 
                      <span>{props.UIname}</span>
                 </p>
-               <p className="TopThreeComponent-price"> {price} <span> KM </span> </p>
+               <p className="TopThreeComponent-price"> {price} <span> {currency} </span> </p>
            </div>
 }
 

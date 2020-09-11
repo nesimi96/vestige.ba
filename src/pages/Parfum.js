@@ -4,10 +4,10 @@ import ImageAndNameParfum from '../components/ParfumComps/ImageAndNameParfum';
 import ParfumQuanityAndPrice from '../components/ParfumComps/ParfumQuanityAndPrice';
 import ArticalInfo from '../components/ParfumComps/ArticalInfo'; 
 import TopThree from '../components/TopThree/TopThree';
-import Connect from '../components/Connect/Connect';
 import Brands from '../components/Brands/Brands';
 import Loader from '../components/Loader/Loader';
 import { useParams } from "react-router-dom";
+import { srbParfumData } from '../data/srbParfumData';
 import '../sass/main.scss';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -18,16 +18,23 @@ const Perfum = (props) => {
     const [parfumData, setParfumData] = useState('');
     const [price, setPrice] = useState('');
     const [activePrice, setActivePrice] = useState('');
+    const [country, setCountry] = useState(null)
+
     
-    let router = props.route.location.pathname;
-    
-    // When component mounts, we parfums and choose one parfum for rendering..
     useEffect(() => {
+        const cntry = localStorage.getItem('country')
+        setCountry(cntry)
         window.scrollTo(0, 0);
-        axios.get('https://vestige-2172c.firebaseio.com/perfums.json')
+        
+        // IF user is located from another country, fetch data for that country...
+        const countryData = cntry !== "BA" ? 'serbiaPerfums' : 'perfums';
+        console.log(countryData)
+
+        axios.get(`https://vestige-2172c.firebaseio.com/${countryData}.json`)
         .then(res => {
             const extractData = Object.values(res.data);
-            const extractKeys = Object.keys(res.data);
+            const extractKeys = Object.keys(res.data)
+
             
             extractData.forEach((curParfum, index) => {
                 if(curParfum.names.route === router){
@@ -52,7 +59,14 @@ const Perfum = (props) => {
             })
         })
         .catch(error => console.log(error))
-    }, [props.route.location.pathname])
+      }, [props.route.location.pathname])
+    
+    let router = props.route.location.pathname;
+  
+    /*// When component mounts, we parfums and choose one parfum for rendering..
+    useEffect(() => {
+       
+    }, [props.route.location.pathname])*/
 
     const adjustActivePrice = (type) => {
         if(type === 'big'){
@@ -68,8 +82,10 @@ const Perfum = (props) => {
 
     const notes = parfumData.notes;
 
-    const articalsData = [{description: 'OPIS ARTIKLA', list: ['Originalan testni parfem', 'Originalno pakovanje',
-     `Šifra artikla: ${parfumData.articalID}`]},
+    const articalsData = [{description: 'OPIS ARTIKLA', list: ['- Originalan testni parfem', '- Originalno pakovanje tester parfema',
+    '- Šifre i barkodovi proizvođača utisnuti na testerima', 
+    '- Vestige se trudi da opisi, slike i cijene proizvoda budu kompletne i bez greške. U slučaju grešaka pri prikazu informacija ne preuzimamo odgovornost.',
+     `- Šifra artikla: ${parfumData.articalID}`]},
     {description: 'OPIS PARFEMA', list: [parfumData.description]},
     {description: 'NOTE', list: notes},
     {description: 'DETALJI OKO NARUDŽBE', list: ['Nakon što ste dodali artikal u korpu, pritistene gumb "NASTAVI NARUDŽBU", zatim popunite podatke koji su nam potrebni kako bismo vam poslali artikal.', 'Nakon što mi zaprimimo narudžbu, šaljemo vam taj isti dan ako je to moguće ili u najgorem slučaju sljedeći dan. Vrijeme dostave je 24h, ne odgovaramo ako dostava kasni zbog razloga na koje mi ne možemo uticati.', 'Moguće je otvoriti paket prije preuzimanja. Ukoliko bude nekih nepravilnosti sa artiklom(oštećenja itd...) slobodni ste da odmah vratite artikal i mi to pozdravljamo.']},
@@ -106,7 +122,7 @@ const Perfum = (props) => {
     parfumPreview = parfumData ? <div className="Parfum" >
                                         <div className="Parfum-mainWrapper">
                                             <ImageAndNameParfum parfumData={parfumData} />
-                                        <ParfumQuanityAndPrice parfumData={parfumData} toLocalStorage={() => multipleMethods()} 
+                                        <ParfumQuanityAndPrice country={country} parfumData={parfumData} toLocalStorage={() => multipleMethods()} 
                                         adjustActivePrice={adjustActivePrice}  price={price}
 activePrice={activePrice.price} activeDiscount={activePrice.discount} buttonStyle={() => buttonStyle() } />
                                         </div>
@@ -114,7 +130,6 @@ activePrice={activePrice.price} activeDiscount={activePrice.discount} buttonStyl
                                             { articals }
                                         </div>
                                         <TopThree notTopThree={true} route={props.route} />
-                                        <Connect />
                                         <Brands />
                                 </div> : <div style={{height: '100vh', position: 'relative'}} > <Loader /> </div>;
 

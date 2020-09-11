@@ -5,14 +5,9 @@ const About = () => {
     return <about>
               <div className="About">
                    <div className="About-text">
-                       <p>Vestige tim je sačinjen od grupe mladih i sposobnih ljudi koji vjeruju da samo kvalitet osvaja mase. 
-                           To nam je motiv i samo to zagovaramo - kvalitet. Imamo pun arsenal modernih taktika za marketig, ali
-                            čvrsto vjerujemo da je najbolja reklama kvalitetan prozivod. </p>
-                       <p>Vestige nudi najbolje prozivode mirisnih testera. Strogo vodimo računa odakle nabavljamo
-                           proizvode i šta prodajemo jer ne prihvatamo nezadovoljstvo naših klijenata.
-                         Naši proizvodi su isključivo originalni testeri od pravih prozvođača, zapakovani u originalne boce. </p>
-                        <p>Šta su testeri? Testeri dolaze u bočicama sa najvećom militražom u kojoj se isti parfem prodaje.
-                             Sama bočica je identična originalnom pakovanju. Testeri se ne razlikuju u trajnosti i intezivnosti od istog parfema u ambalaži namjenjenoj za prodaju u parfimerijama. Prednost testera je cijena koja je niža od komercijalnog pakovanja parfema.</p>
+                       <p>U Vestige vjerujemo da bi ljepota trebala biti dostupna svima jer ona pridonosi samopouzdanju i mijenja na bolje. Kada se ljudi osjećaju dobro, lakše postižu svoje ciljeve, a zauzvrat čine ljepšim svijet oko sebe. Uvijek se trudimo u ponudi imati najprikladnije proizvode za vas. </p>
+                       <p>Naš cilj je, u isto vrijeme, dostaviti proizvode što sigurnije i što brže. Sve proizvode imamo na zalihama, a zahvaljujući našoj tehnologiji, odličnim vještinama upravljanja našeg logističkog i distribucijskog centra, vaša narudžba će biti isporučena u najkraćem mogućem roku. Naše parfeme možete naručiti putem društvenih mreža Facebook i Instagram. </p>
+                        <p>Vestige smatra svakog svog klijenta jedinstvenim, zato se trudimo da svakom našem klijentu pružimo ljubav koju nosimo do naših proizvoda, usluge i stučnosti, kako bi to postala zajednička strast.  Zadovoljstvo kupaca je za nas uvijek bilo i uvijek će biti na prvom mjestu.</p>
                    </div>
                    <div className="About-img">
                        <div className="About-img-logo">

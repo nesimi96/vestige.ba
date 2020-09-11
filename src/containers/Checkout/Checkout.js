@@ -5,7 +5,9 @@ import Form from './Form';
 import CheckoutSummary from './CheckoutSummary';
 import { connect } from 'react-redux';
 import { calcTotal } from '../../components/helpFuncs/calcTotal';
+import { srbParfumData } from '../../data/srbParfumData';
 import axios from 'axios';
+import PromoCode from '../../components/CheckoutComponents/PromoCode';
 
 const Checkout = (props) => {
 
@@ -17,6 +19,9 @@ const Checkout = (props) => {
     let [emails, setEmails] = useState(null);
     let [emailKeys, setEmailKeys] = useState(null);
 
+    const country = localStorage.getItem('country')
+
+    console.log(parfums)
     
     useEffect(() => {
        // get promo codes
@@ -41,7 +46,10 @@ const Checkout = (props) => {
        .then(res => {
           const extract = Object.values(res.data);
           const parfumKeys = Object.keys(res.data);
-          setParfums(extract);
+
+          const countryData = country !== "BA" ? srbParfumData() : extract
+
+          setParfums(countryData);
           setParfumkeys(parfumKeys);
        })
        .catch(error => alert(error))
@@ -49,17 +57,12 @@ const Checkout = (props) => {
 
     const cartList = props.cartsList;
 
-    // If user buy 3 articals
-    useMemo(() => {
-        if(cartList) if(cartList.length >= 3) setPromoDiscount(20)
-    }, [cartList])
-
     // What user typed in promo input
     const typePromoCode = (e) => setPromoTyped(e.target.value);
     
     // check promo valid
     const checkPromoValidation = () => {
-        if(promoCodes) promoCodes.forEach(cur => cur === promoTyped ? setPromoDiscount(10) : null)
+        if(promoCodes) promoCodes.forEach(cur => cur === promoTyped ? setPromoDiscount(promoDiscount + 10) : null)
     }
 
     // Calculate summary function
@@ -70,8 +73,10 @@ const Checkout = (props) => {
         }
    }
 
+   const shipping = country === "RS" ? 300 : 600;
+
    // Total. Calculate everything no matter promo code is there or not
-   let totalWithPromo = calcTotal(calculateSummary(), 600, promoDiscount);
+   let totalWithPromo = calcTotal(calculateSummary(), shipping, promoDiscount);
 
     // SEND ORDER
     const sendOrder = (email, userData) => {
@@ -79,8 +84,6 @@ const Checkout = (props) => {
         let orderID = null;
         if(!orderID) orderID = Math.floor(Math.random() * 10000000)
         
-        if(email){ sendEmail(email) }
-
         const data = {
             userInfo: {
                 name: userData[0].val,
@@ -89,6 +92,7 @@ const Checkout = (props) => {
                 tel: userData[3].val,
                 email: email.val
             },
+            country: country,
             time: currentTime(),
             cartList: cartList,
             money: {
@@ -101,13 +105,17 @@ const Checkout = (props) => {
         // Send order to data base
         axios.post('https://vestige-2172c.firebaseio.com/orders.json', data)
         .then(res => {
-            localStorage.setItem('orderID', orderID);
-            window.location.href="/order-summary"
+            axios.post('https://vestige-2172c.firebaseio.com/emaildiscount.json', {email: data.userInfo.email})
+            .then(() => {
+                localStorage.setItem('orderID', orderID);
+                window.location.href="/order-summary"
+            })
+            .catch(error => console.log(error))
         })
         .catch(error => console.log(error));
 
         // Change bought propery from database
-        if(parfums && parfumKeys) changeBoughtOfParfum();
+        if(parfums && parfumKeys && country !== "RS") changeBoughtOfParfum();
             
     }
 
@@ -128,30 +136,6 @@ const Checkout = (props) => {
 
            } )
         
-    }
-
-
-    // send email and money order for promo code
-    const sendEmail = (email) => {
-       const moneySumm = calculateSummary();
-
-       if(emails){
-           let counter = 0;
-           emails.forEach((curEmail, index) => {
-                 if(curEmail.email === email.val){
-                    curEmail.summ += moneySumm;
-                   const emailKey = emailKeys[index];
-                   counter++;
-                   axios.patch(`https://vestige-2172c.firebaseio.com/emails/${emailKey}.json`, curEmail)
-                 }
-           })
-
-           if(counter === 0){
-            const userEmail = { email: email.val, summ: moneySumm }
-            axios.post('https://vestige-2172c.firebaseio.com/emails.json', userEmail)
-           }
-       }
-    
     }
 
     const currentTime = () => {
@@ -177,7 +161,7 @@ const Checkout = (props) => {
     currentTime();
 
     return <div className="Checkout">
-               <CheckoutSummary sendOrder={sendOrder} cartList={cartList}
+               <CheckoutSummary country={country} sendOrder={sendOrder} cartList={cartList}
                promoDiscount={promoDiscount} setPromoDiscount={setPromoDiscount} calculateSummary={calculateSummary}
                checkPromoValidation={checkPromoValidation} typePromoCode={typePromoCode} totalWithPromo={totalWithPromo} />
                <h1>Ispunite formu</h1>

@@ -39,8 +39,44 @@ export const itemToLocalStorage = (cartObj) => {
 // UPDATE STATE WITH LOCAL STORAGE
 export const addToCart = () => {
 
-    const cartList = JSON.parse(localStorage.getItem("cartItem"));
+    let country = localStorage.getItem('country')
 
+    const updateLocalStorage = (items) => {
+        if(items){
+            let counter = 0;
+
+            items.forEach((cur) => cur.parfumData.activePrice.ml === '55ml' ? counter++ : null)
+            
+            let currentPrice = null;
+            items.forEach(cur => {
+               if(cur.price.ml === '55ml'){
+                  if(counter === 2) currentPrice = country !== "BA" ? '1000' : '2000';
+                  else if(counter >= 3) currentPrice = country !== "BA" ? '833' : '1690';
+                  else { currentPrice = country !== "BA" ? '1200' : '2400' }
+                  cur.price.price = currentPrice;
+                  cur.parfumData.activePrice.price = currentPrice
+                  cur.parfumData.parfumData.categoryPrice = currentPrice
+               }
+
+               if(country !== 'BA' && cur.price.ml === '55ml'){
+                   console.log(counter)
+                   if(counter >= 2){ currentPrice = '1000'
+                   }else { currentPrice = '1300' }
+
+                    cur.price.price = currentPrice;
+                    cur.parfumData.activePrice.price = currentPrice
+                    cur.parfumData.parfumData.categoryPrice = currentPrice
+               }
+            })
+          
+            localStorage.setItem('cartItem', JSON.stringify(items))
+
+        }
+    }
+
+    const cartList = JSON.parse(localStorage.getItem("cartItem"));
+    updateLocalStorage(cartList)
+    
     return {
         type: actionTypes.ADD_TO_CART,
         cartList: cartList,
